@@ -23,12 +23,13 @@ public class NavioController : ControllerBase {
 
     private static List<Container> containers = new List<Container>();
 
-    private static List<int> fila = new List<int>();
-    private static List<Container> filaprioridade = new List<Container>();
+    private static List<string> pontos = new List<string>();
 
-    private void adicionarNavio(string ponto, double carga, List<Container> container) {
+    private static List<int> fila = new List<int>();
+
+    private void adicionarNavio(double carga, List<string> pontos) {
         
-        navios.Add(new Navio(ponto, carga, container));
+        navios.Add(new Navio(carga, pontos));
 
     }
 
@@ -44,6 +45,22 @@ public class NavioController : ControllerBase {
 
     }
 
+    // Retorna a lista de navios
+    [HttpGet("ListaNavios")]
+    public ActionResult<List<Navio>> ListaNavios() {
+
+        return Ok(navios);
+
+    }
+
+    // Retorna a lista de containers
+    [HttpGet("ListaContainers")]
+    public ActionResult<List<Container>> ListaContainers() {
+
+        return Ok(containers);
+
+    }
+
     // cadastroNavio
     [HttpPost("cadastroNavio")]
     public ActionResult<List<Navio>> adicionarNavio(Navio navio) {
@@ -56,11 +73,23 @@ public class NavioController : ControllerBase {
             return StatusCode(204, "Valores inválidos!");
         }
 
-        if (navio.Ponto == null) {
+        if (!navio.ListaPontos.Any()) {
             return StatusCode(204, "Valores inválidos!");
         }
 
-        adicionarNavio(navio.Ponto, navio.CargaMaxima, navio.ContainersLista);
+        foreach (string i in navio.ListaPontos) {
+
+            i.ToUpper();
+
+            if (i != "A" && i != "B" && i != "C" && i != "D") {
+
+                return StatusCode(204, "Valores inválidos!");
+
+            }
+
+        }
+
+        adicionarNavio(navio.CargaMaxima, navio.ListaPontos);
 
         return Ok(navios);
 
@@ -96,28 +125,6 @@ public class NavioController : ControllerBase {
             return StatusCode(204, "Valores inválidos!");
         }
 
-        if (navio.Ponto != null) {
-
-            navio.Ponto = navio.Ponto.ToUpper();
-
-            if (navio.Ponto == "A" || navio.Ponto == "B" || navio.Ponto == "C" || navio.Ponto == "D") {
-
-                aux.Ponto = navio.Ponto;
-
-            }
-
-            else {
-
-                return StatusCode(204, "Valores inválidos!");
-
-            }
-            
-        }
-
-        else {
-            return StatusCode(204, "Valores inválidos!");
-        }
-
         return Ok(navios);
 
     }
@@ -138,7 +145,7 @@ public class NavioController : ControllerBase {
             return StatusCode(204, "Valores inválidos!");
         }
 
-        adicionarContainer(container.Ponto, container.Carga);
+        adicionarContainer(container.Ponto.ToUpper(), container.Carga);
 
         adicionarContainerFila(containers.Last().Id);
 
@@ -202,95 +209,145 @@ public class NavioController : ControllerBase {
 
     }
 
-    // Retorna a lista de navios
-    [HttpGet("ListaNavios")]
-    public ActionResult<List<Navio>> ListaNavios() {
-
-        return Ok(navios);
-
-    }
-
-    // Retorna a lista de containers
-    [HttpGet("ListaContainers")]
-    public ActionResult<List<Container>> ListaContainers() {
-
-        return Ok(containers);
-
-    }
-
-
-     [HttpDelete("{id}")]
-    public ActionResult<Boolean> Confisco(int id)
-    {
+    // confisco
+    [HttpDelete("confisco/{id}")]
+    public ActionResult<Boolean> Confisco(int id) {
 
         Container x = null;
-        foreach (Container i in containers)
-        {
-            if (i.Id == id)
-            { 
+
+        foreach (Container i in containers) {
+
+            if (i.Id == id) { 
+
                 x = i; 
+
             }
 
         }
-        if (x != null)
-        {
+
+        if (x != null) {
+
             containers.Remove(x);
             return Ok();
+
         }
 
 
         return false;
     }
 
-    // carregamento do containers 
-    [HttpGet]
-    public ActionResult<List<Container>> Carregamento()
-    {
-        try
-        {
-            if(containers == null){
-                return StatusCode(400, "Não existem containers cadastrados na lista");
+    // carregamento
+    [HttpGet("carregamento")]
+    public ActionResult<List<Navio>> Carregamento() {
+
+        try {
+
+            if (containers == null || !containers.Any()) {
+                return StatusCode(400, "Não existem containers cadastrados na lista!");
+            }
+            
+            double cargaTemp = 0;
+
+            foreach (Navio n in navios) {
+
+                double cargaAtual = 0;
+
+                foreach (Container c in n.ListaContainers) {
+
+                    cargaAtual += c.Carga;
+                    
+                }
+
+                if (containers != null && containers.Any()) {
+
+                    foreach (Container c in containers) {
+
+                        if (n.ListaPontos.Contains(c.Ponto)) {
+
+                            if (cargaTemp + c.Carga <= n.CargaMaxima && (cargaAtual + c.Carga) < n.CargaMaxima) {
+
+                                n.ListaContainers.Add(c);
+                                cargaTemp += c.Carga;
+
+                            }
+
+                        }
+
+                    }
+
+                    foreach (Container c in n.ListaContainers) {
+
+                        containers.Remove(c);
+                        
+                    }
+
+                }
+
+                n.ListaContainers = n.ListaContainers.OrderBy(x => x.Ponto).ToList();
+
             }
 
-            var filaprioridade = containers.OrderBy(a => a.Carga).ToList();
+            return Ok(navios);
 
-            return filaprioridade;
         }
-        catch (System.Exception)
-        {
-            return Problem("Erro ao mostar a lista ordenada dos containers");
+
+        catch (System.Exception) {
+            return Problem("Erro ao mostar a lista ordenada dos containers!");
         }
     }
 
-    [HttpGet("{id}")]
+    // descarregamento
+    [HttpGet("descarregamento/{id}")]
     public ActionResult<List<Container>> Descarregamento(int id){
         try {
-        Container x = null;
-        foreach (Container i in containers)
-        {
-            if (i.Id == id)
-            { 
-                x = i; 
-            }
-            else{
-                return StatusCode(400, "Não existem esse id de container cadastrado");
+
+            Container x = null;
+            Navio y = null;
+
+            foreach (Navio n in navios) {
+                
+                foreach (Container c in n.ListaContainers) {
+
+                    if (c.Id == id) {
+
+                        x = c;
+                        y = n;
+
+                        break;
+
+                    }
+
+                    else {
+
+                        return StatusCode(400, "Não existem esse id de container cadastrado!");
+
+                    }
+
+                }
+
             }
 
+            if (x != null && y != null) {
+
+                y.ListaContainers.Remove(x);
+                y.ListaContainers = y.ListaContainers.OrderBy(x => x.Ponto).ToList();
+                return Ok(navios);
+
+            }
+
+            else {
+
+                return NotFound(navios);
+
+            }
         }
-        if (x != null)
-        {
-            containers.Remove(x);
-            var filaprioridade = containers.OrderBy(a => a.Carga).ToList();
-            return filaprioridade;
-        }
-        else{
-           return containers;
-        }
-        }
-        catch (System.Exception)
-        {
+
+        catch (System.Exception) {
+
             return Problem("problema ao descarregar o container");
+
         }
+
     }
 
     // Retorna a fila de containers
@@ -329,7 +386,20 @@ public class NavioController : ControllerBase {
 
     }
 
+    /* private static void removeContainerById(int id) {
 
+        var contador = 0;
 
+        foreach (Container i in containers) {
+
+            if (i.Id == id) {
+                containers.RemoveAt(contador);
+            }
+
+            contador += 1;
+
+        }
+
+    } */
 
 }

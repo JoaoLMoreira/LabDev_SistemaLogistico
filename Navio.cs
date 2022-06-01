@@ -3,23 +3,24 @@ namespace SistemaLogistico;
 public class Navio {
 
     public Navio() {
-        ContainersLista = new List<Container>();
+        ListaPontos = new List<string>();
+        ListaContainers = new List<Container>();
     }
 
-    public Navio (string ponto, double carga, List<Container> containers) {
+    public Navio (double carga, List<string> pontos) {
 
         Id = id + 1;
-        Ponto = ponto;
         CargaMaxima = carga;
-        ContainersLista = new List<Container>();
+        ListaPontos = pontos;
+        ListaContainers = new List<Container>();
         id += 1;
 
     }
 
     static int id = 0;
     public int Id {get; set;}
-    public string? Ponto {get; set;}
     public double CargaMaxima {get; set;}
-    public List<Container> ContainersLista {get; set;}
+    public List<string> ListaPontos {get; set;}
+    public List<Container> ListaContainers {get; set;}
 
 }

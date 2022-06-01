@@ -208,26 +208,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thorh\\.nuget\\packages\\": {}
+    "C:\\Users\\Renan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\thorh\\Documents\\ProjetosEmCCharp\\sistmalogisitico\\LabDesenvolvimento-SistemaLogistico\\SistemaLogistico\\SistemaLogistico.csproj",
+      "projectUniqueName": "C:\\Users\\Renan\\OneDrive\\Área de Trabalho\\LabDev\\SistemaLogistico.csproj",
       "projectName": "SistemaLogistico",
-      "projectPath": "C:\\Users\\thorh\\Documents\\ProjetosEmCCharp\\sistmalogisitico\\LabDesenvolvimento-SistemaLogistico\\SistemaLogistico\\SistemaLogistico.csproj",
-      "packagesPath": "C:\\Users\\thorh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\thorh\\Documents\\ProjetosEmCCharp\\sistmalogisitico\\LabDesenvolvimento-SistemaLogistico\\SistemaLogistico\\obj\\",
+      "projectPath": "C:\\Users\\Renan\\OneDrive\\Área de Trabalho\\LabDev\\SistemaLogistico.csproj",
+      "packagesPath": "C:\\Users\\Renan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Renan\\OneDrive\\Área de Trabalho\\LabDev\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\thorh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Renan\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -269,7 +267,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
