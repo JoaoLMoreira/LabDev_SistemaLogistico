@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Globalization;
+//using SistemaLogistico.Models;
 
 namespace SistemaLogistico.Controllers;
 
@@ -9,6 +10,13 @@ namespace SistemaLogistico.Controllers;
 
 public class NavioController : ControllerBase
 {
+
+    private readonly iNavioController navioController;
+
+    public NavioController(iNavioController navioController)
+    {
+        _navioController = navioController;
+    }
     private double ValidaFloat(string valor)
     {
         valor = valor.Replace(",", ".");
@@ -189,7 +197,7 @@ public class NavioController : ControllerBase
 
     // confisco
     [HttpDelete("confisco/{id}")]
-    public ActionResult<Boolean> Confisco(int id)
+    public ActionResult<bool> Confisco(int id)
     {
         Container x = null;
         foreach (Container i in containers)
