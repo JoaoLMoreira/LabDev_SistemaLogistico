@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Globalization;
-//using SistemaLogistico.Models;
+using SistemaLogistico.Models;
+using SistemaLogistico.Services;
 
 namespace SistemaLogistico.Controllers;
 
@@ -17,202 +18,128 @@ public class NavioController : ControllerBase
     {
         _navioController = navioController;
     }
-    private double ValidaFloat(string valor)
-    {
-        valor = valor.Replace(",", ".");
-        double retorno = double.Parse(valor, CultureInfo.InvariantCulture.NumberFormat);
-        return retorno;
-    }
 
-    private static List<Navio> navios = new List<Navio>();
-    private static List<Container> containers = new List<Container>();
-    private static List<string> pontos = new List<string>();
-    private static List<int> fila = new List<int>();
-    private static List<int> fila1 = new List<int>();
-    private static List<int> fila2 = new List<int>();
-    private static List<int> fila3 = new List<int>();
-    private void adicionarNavio(double carga, List<string> pontos)
-    {
-        navios.Add(new Navio(carga, pontos));
-    }
-
-    private void adicionarContainer(string ponto, double carga)
-    {
-        containers.Add(new Container(ponto, carga));
-    }
-
-    private void adicionarContainerFila(int idContainer)
-    {
-        int limite = 3;
-        if (fila1.Count < limite)
-        {
-            fila1.Add(idContainer);
-        }
-        else if (fila2.Count < limite)
-        {
-            fila2.Add(idContainer);
-        }
-        else if (fila3.Count < limite)
-        {
-            fila3.Add(idContainer);
-        }
-    }
 
     // Retorna a lista de navios
     [HttpGet("ListaNavios")]
     public ActionResult<List<Navio>> ListaNavios()
     {
-        return Ok(navios);
+        return Ok(_navioController.ListaNavios());
     }
 
     // Retorna a lista de containers
     [HttpGet("ListaContainers")]
     public ActionResult<List<Container>> ListaContainers()
     {
-        return Ok(containers);
+        return Ok(_navioController.ListaContainers());
     }
 
     // cadastroNavio
     [HttpPost("cadastroNavio")]
     public ActionResult<List<Navio>> adicionarNavio(Navio navio)
     {
-        if (navio is null)
+        try
         {
-            return StatusCode(204, "Valores inválidos!");
-        }
-        if (navio.CargaMaxima <= 0)
-        {
-            return StatusCode(204, "Valores inválidos!");
-        }
-        if (!navio.ListaPontos.Any())
-        {
-            return StatusCode(204, "Valores inválidos!");
-        }
-        foreach (string i in navio.ListaPontos)
-        {
-            i.ToUpper();
-            if (i != "A" && i != "B" && i != "C" && i != "D")
+            if (navio == null || navio == "")
             {
-                return StatusCode(204, "Valores inválidos!");
+                return StatusCode(400, "Navio não informado no corpo da requisição");
             }
+            return Ok(_navioController.adicionarNavio(navio));
         }
-        adicionarNavio(navio.CargaMaxima, navio.ListaPontos);
-        return Ok(navios);
+        catch (System.Exception)
+        {
+            return Problem("Falha ao inserir navio na fila de embarque.");
+        }
     }
 
     // alterarNavio
     [HttpPut("alterarNavio/{id}")]
     public ActionResult<bool> alterarNavio(int id, Navio navio)
     {
-        Navio aux = null;
         try
         {
-            aux = getNavioById(id);
+            if ((id == null) || (navio == null || navio == ""))
+            {
+                return StatusCode(400, "Navio ou id não informado no corpo da requisição");
+            }
+            return Ok(_navioController.alterarNavio(id, navio));
         }
         catch (System.Exception)
         {
-            return Problem("500", "Erro desconhecido.");
+            return Problem("Falha ao alterar navio.");
         }
-        if (aux == null)
-        {
-            return NotFound();
-        }
-        if (navio.CargaMaxima > 0)
-        {
-            aux.CargaMaxima = navio.CargaMaxima;
-        }
-        else
-        {
-            return StatusCode(204, "Valores inválidos!");
-        }
-        return Ok(navios);
+
     }
 
-     // filaEmbarque
+    // filaEmbarque
     [HttpPost("filaEmbarque")]
     public ActionResult<(List<Navio>, List<Container>, List<int>, List<int>, List<int>)> adicionarContainerFila(Container container)
     {
-        if (container is null)
+        try
         {
-            return StatusCode(204, "Valores inválidos!");
+            if (container == null || container == "")
+            {
+                return StatusCode(400, "Container não informado no corpo da requisição");
+            }
+            if (navio is null)
+            {
+                return StatusCode(204, "Valores inválidos!");
+            }
+            if (navio.CargaMaxima <= 0)
+            {
+                return StatusCode(204, "Valores inválidos!");
+            }
+            if (!navio.ListaPontos.Any())
+            {
+                return StatusCode(204, "Valores inválidos!");
+            }
+            foreach (string i in navio.ListaPontos)
+            {
+                i.ToUpper();
+                if (i != "A" && i != "B" && i != "C" && i != "D")
+                {
+                    return StatusCode(204, "Valores inválidos!");
+                }
+            }
+            return Ok(_navioController.adicionarContainerFila(container));
         }
-        if (container.Carga <= 0)
+        catch (System.Exception)
         {
-            return StatusCode(204, "Valores inválidos!");
+            return Problem("Falha ao inserir container na fila de embarque.");
         }
-
-        if (container.Ponto == null)
-        {
-            return StatusCode(204, "Valores inválidos!");
-        }
-        adicionarContainer(container.Ponto.ToUpper(), container.Carga);
-        adicionarContainerFila(containers.Last().Id);
-        return (navios, containers, fila1, fila2, fila3);
     }
 
     // alfandega
     [HttpPut("alfandega/{id}")]
     public ActionResult<bool> alterarContainer(int id, Container container)
     {
-        Container aux = null;
         try
         {
-            aux = getContainerById(id);
+            if ((id == null) || (container == null || container == ""))
+            {
+                return StatusCode(400, "container ou id não informado no corpo da requisição");
+            }
+            return Ok(_navioController.alterarContainer(id, container));
         }
         catch (System.Exception)
         {
-            return Problem("500", "Erro desconhecido.");
-        }
-        if (aux == null)
-        {
-            return NotFound();
-        }
-        if (container.Carga > 0)
-        {
-            aux.Carga = container.Carga;
-        }
-        else
-        {
-            return StatusCode(204, "Valores inválidos!");
+            return Problem("Falha ao alterar container.");
         }
 
-        if (container.Ponto != null)
-        {
-            container.Ponto = container.Ponto.ToUpper();
-            if (container.Ponto == "A" || container.Ponto == "B" || container.Ponto == "C" || container.Ponto == "D")
-            {
-                aux.Ponto = container.Ponto;
-            }
-            else
-            {
-                return StatusCode(204, "Valores inválidos!");
-            }
-        }
-        else
-        {
-            return StatusCode(204, "Valores inválidos!");
-        }
-        return Ok(containers);
     }
 
     // confisco
     [HttpDelete("confisco/{id}")]
     public ActionResult<bool> Confisco(int id)
     {
-        Container x = null;
-        foreach (Container i in containers)
+        try
         {
-            if (i.Id == id)
-            {
-                x = i;
-            }
+            return Ok(_navioController.confisco(id));
         }
-        if (x != null)
+        catch (System.Exception)
         {
-            containers.Remove(x);
-            return Ok();
+            return Problem("Falha ao confiscar container.");
         }
-        return false;
     }
 
     // carregamento
@@ -221,44 +148,11 @@ public class NavioController : ControllerBase
     {
         try
         {
-            if (containers == null || !containers.Any())
-            {
-                return StatusCode(400, "Não existem containers cadastrados na lista!");
-            }
-            double cargaTemp = 0;
-
-            foreach (Navio n in navios)
-            {
-                double cargaAtual = 0;
-                foreach (Container c in n.ListaContainers)
-                {
-                    cargaAtual += c.Carga;
-                }
-                if (containers != null && containers.Any())
-                {
-                    foreach (Container c in containers)
-                    {
-                        if (n.ListaPontos.Contains(c.Ponto))
-                        {
-                            if (cargaTemp + c.Carga <= n.CargaMaxima && (cargaAtual + c.Carga) < n.CargaMaxima)
-                            {
-                                n.ListaContainers.Add(c);
-                                cargaTemp += c.Carga;
-                            }
-                        }
-                    }
-                    foreach (Container c in n.ListaContainers)
-                    {
-                        containers.Remove(c);
-                    }
-                }
-                n.ListaContainers = n.ListaContainers.OrderBy(x => x.Ponto).ToList();
-            }
-            return Ok(navios);
+            return Ok(_navioController.Carregamento());
         }
         catch (System.Exception)
         {
-            return Problem("Erro ao mostar a lista ordenada dos containers!");
+            return Problem("Falha ao efetuar carregamento.");
         }
     }
 
@@ -268,39 +162,11 @@ public class NavioController : ControllerBase
     {
         try
         {
-            Container x = null;
-            Navio y = null;
-            foreach (Navio n in navios)
-            {
-                foreach (Container c in n.ListaContainers)
-                {
-                    if (c.Id == id)
-                    {
-                        x = c;
-                        y = n;
-                        break;
-                    }
-                    else
-                    {
-                        return StatusCode(400, "Não existem esse id de container cadastrado!");
-                    }
-                }
-            }
-
-            if (x != null && y != null)
-            {
-                y.ListaContainers.Remove(x);
-                y.ListaContainers = y.ListaContainers.OrderBy(x => x.Ponto).ToList();
-                return Ok(navios);
-            }
-            else
-            {
-                return NotFound(navios);
-            }
+            return Ok(_navioController.descarregamento(id));
         }
         catch (System.Exception)
         {
-            return Problem("problema ao descarregar o container");
+            return Problem("Falha ao efetuar descarregamento.");
         }
 
     }
@@ -309,30 +175,15 @@ public class NavioController : ControllerBase
     [HttpGet("Fila")]
     public ActionResult<List<int>> Fila()
     {
-        return Ok(fila);
+        try
+        {
+            return Ok(_navioController.Fila());
+        }
+        catch (System.Exception)
+        {
+            return Problem("Falha ao retorna a fila de containers.");
+        }
     }
 
-    private Navio getNavioById(int id)
-    {
-        foreach (Navio i in navios)
-        {
-            if (i.Id == id)
-            {
-                return i;
-            }
-        }
-        return null;
-    }
 
-    private Container getContainerById(int id)
-    {
-        foreach (Container i in containers)
-        {
-            if (i.Id == id)
-            {
-                return i;
-            }
-        }
-        return null;
-    }
 }

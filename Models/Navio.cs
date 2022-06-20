@@ -1,4 +1,4 @@
-namespace SistemaLogistico;
+namespace SistemaLogistico.Models;
 
 public class Navio {
 

@@ -208,19 +208,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thorh\\.nuget\\packages\\": {}
+    "C:\\Users\\joaol\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\thorh\\Documents\\ProjetosEmCCharp\\trabflavio-atualizado\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
+      "projectUniqueName": "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
       "projectName": "SistemaLogistico",
-      "projectPath": "C:\\Users\\thorh\\Documents\\ProjetosEmCCharp\\trabflavio-atualizado\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
-      "packagesPath": "C:\\Users\\thorh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\thorh\\Documents\\ProjetosEmCCharp\\trabflavio-atualizado\\LabDev_SistemaLogistico\\obj\\",
+      "projectPath": "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
+      "packagesPath": "C:\\Users\\joaol\\.nuget\\packages\\",
+      "outputPath": "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\thorh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\joaol\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -228,8 +228,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://informatfs.pkgs.visualstudio.com/bd3c01b9-1b03-45f9-90fa-648c20a14cb9/_packaging/informa-packages/nuget/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
@@ -270,7 +269,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

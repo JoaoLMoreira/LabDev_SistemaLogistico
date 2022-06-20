@@ -133,3 +133,13 @@ C:\Users\thorh\Documents\ProjetosEmCCharp\trabflavio-atualizado\LabDev_SistemaLo
 C:\Users\thorh\Documents\ProjetosEmCCharp\trabflavio-atualizado\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.pdb
 C:\Users\thorh\Documents\ProjetosEmCCharp\trabflavio-atualizado\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.genruntimeconfig.cache
 C:\Users\thorh\Documents\ProjetosEmCCharp\trabflavio-atualizado\LabDev_SistemaLogistico\obj\Debug\net6.0\ref\SistemaLogistico.dll
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.csproj.AssemblyReference.cache
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.GeneratedMSBuildEditorConfig.editorconfig
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.AssemblyInfoInputs.cache
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.AssemblyInfo.cs
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.csproj.CoreCompileInputs.cache
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.MvcApplicationPartsAssemblyInfo.cs
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.MvcApplicationPartsAssemblyInfo.cache
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.dll
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\refint\SistemaLogistico.dll
+C:\_Dev\WEB\TrabFlavio\LabDev_SistemaLogistico\obj\Debug\net6.0\SistemaLogistico.pdb
