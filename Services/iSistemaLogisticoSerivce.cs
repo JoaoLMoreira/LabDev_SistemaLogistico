@@ -3,7 +3,7 @@ using SistemaLogistico.Models;
 
 namespace SistemaLogistico.Services
 {
-    public interface iNavioController
+    public interface iNavioService
     {
         List<Navio> ListaNavios();
         List<Container> ListaContainers();
