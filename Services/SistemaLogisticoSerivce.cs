@@ -1,7 +1,8 @@
+using SistemaLogistico.Controllers;
 using SistemaLogistico.Models;
 namespace SistemaLogistico.Services
 {
-    public class NavioController : iNavioController
+    public class NavioController : iNavioService
     {
         private static List<Navio> navios = new List<Navio>();
         private static List<Container> containers = new List<Container>();
@@ -11,13 +12,6 @@ namespace SistemaLogistico.Services
         private static List<int> fila2 = new List<int>();
         private static List<int> fila3 = new List<int>();
 
-
-        private double ValidaFloat(string valor)
-        {
-            valor = valor.Replace(",", ".");
-            double retorno = double.Parse(valor, CultureInfo.InvariantCulture.NumberFormat);
-            return retorno;
-        }
 
         private void adicionarNavio(double carga, List<string> pontos)
         {
@@ -93,13 +87,13 @@ namespace SistemaLogistico.Services
 
             if (aux == null)
             {
-                return NotFound();
+                return false;
             }
             if (navio.CargaMaxima > 0)
             {
                 aux.CargaMaxima = navio.CargaMaxima;
             }
-            return (navios);
+            return (true);
         }
 
         public (List<Navio>, List<Container>, List<int>, List<int>, List<int>) adicionarContainerFila(Container container)
@@ -131,10 +125,10 @@ namespace SistemaLogistico.Services
                     aux.Ponto = container.Ponto;
                 }
             }
-            return (containers);
+            return (true);
         }
 
-        public ActionResult<bool> Confisco(int id)
+        public bool Confisco(int id)
         {
             Container x = null;
             foreach (Container i in containers)
@@ -152,7 +146,7 @@ namespace SistemaLogistico.Services
             return false;
         }
 
-        public ActionResult<List<Navio>> Carregamento()
+        public List<Navio> Carregamento()
         {
             double cargaTemp = 0;
 
@@ -185,8 +179,8 @@ namespace SistemaLogistico.Services
             }
             return (navios);
         }
-        public ActionResult<List<Container>> Descarregamento(int id)
-        {
+        public List<Container> Descarregamento(int id)
+    {
             Container x = null;
             Navio y = null;
             foreach (Navio n in navios)
@@ -199,6 +193,10 @@ namespace SistemaLogistico.Services
                         y = n;
                         break;
                     }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
 
@@ -206,11 +204,16 @@ namespace SistemaLogistico.Services
             {
                 y.ListaContainers.Remove(x);
                 y.ListaContainers = y.ListaContainers.OrderBy(x => x.Ponto).ToList();
-                return (navios);
+                return (containers);
             }
-
+            else
+            {
+                return null;
+            }
         }
-        public ActionResult<List<int>> Fila()
+
+    
+        public List<int> Fila()
         {
             return (fila);
         }

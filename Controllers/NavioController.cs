@@ -12,9 +12,9 @@ namespace SistemaLogistico.Controllers;
 public class NavioController : ControllerBase
 {
 
-    private readonly iNavioController navioController;
+    private readonly iNavioService _navioController;
 
-    public NavioController(iNavioController navioController)
+    public NavioController(iNavioService navioController)
     {
         _navioController = navioController;
     }
@@ -40,11 +40,11 @@ public class NavioController : ControllerBase
     {
         try
         {
-            if (navio == null || navio == "")
+            if (navio != null)
             {
-                return StatusCode(400, "Navio não informado no corpo da requisição");
+                return Ok(_navioController.adicionarNavio(navio));
             }
-            return Ok(_navioController.adicionarNavio(navio));
+            return StatusCode(400, "Navio não informado no corpo da requisição");
         }
         catch (System.Exception)
         {
@@ -58,7 +58,7 @@ public class NavioController : ControllerBase
     {
         try
         {
-            if ((id == null) || (navio == null || navio == ""))
+            if (navio == null)
             {
                 return StatusCode(400, "Navio ou id não informado no corpo da requisição");
             }
@@ -77,29 +77,21 @@ public class NavioController : ControllerBase
     {
         try
         {
-            if (container == null || container == "")
+            if (container == null)
             {
                 return StatusCode(400, "Container não informado no corpo da requisição");
             }
-            if (navio is null)
+            if (container is null)
             {
                 return StatusCode(204, "Valores inválidos!");
             }
-            if (navio.CargaMaxima <= 0)
+            if (container.Carga <= 0)
             {
                 return StatusCode(204, "Valores inválidos!");
             }
-            if (!navio.ListaPontos.Any())
+            if (container.Ponto == null)
             {
                 return StatusCode(204, "Valores inválidos!");
-            }
-            foreach (string i in navio.ListaPontos)
-            {
-                i.ToUpper();
-                if (i != "A" && i != "B" && i != "C" && i != "D")
-                {
-                    return StatusCode(204, "Valores inválidos!");
-                }
             }
             return Ok(_navioController.adicionarContainerFila(container));
         }
@@ -115,7 +107,7 @@ public class NavioController : ControllerBase
     {
         try
         {
-            if ((id == null) || (container == null || container == ""))
+            if ((id == null) || (container == null))
             {
                 return StatusCode(400, "container ou id não informado no corpo da requisição");
             }
@@ -134,7 +126,7 @@ public class NavioController : ControllerBase
     {
         try
         {
-            return Ok(_navioController.confisco(id));
+            return Ok(_navioController.Confisco(id));
         }
         catch (System.Exception)
         {
@@ -162,7 +154,7 @@ public class NavioController : ControllerBase
     {
         try
         {
-            return Ok(_navioController.descarregamento(id));
+            return Ok(_navioController.Descarregamento(id));
         }
         catch (System.Exception)
         {
