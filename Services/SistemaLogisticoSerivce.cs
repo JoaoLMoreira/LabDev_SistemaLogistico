@@ -1,4 +1,3 @@
-using SistemaLogistico.Controllers;
 using SistemaLogistico.Models;
 namespace SistemaLogistico.Services
 {
@@ -25,26 +24,12 @@ namespace SistemaLogistico.Services
 
         private Navio getNavioById(int id)
         {
-            foreach (Navio i in navios)
-            {
-                if (i.Id == id)
-                {
-                    return i;
-                }
-            }
-            return null;
+            return navios.Where(x => x.Id == id).FirstOrDefault();
         }
 
         private Container getContainerById(int id)
         {
-            foreach (Container i in containers)
-            {
-                if (i.Id == id)
-                {
-                    return i;
-                }
-            }
-            return null;
+            return containers.Where(x => x.Id == id).FirstOrDefault();
         }
 
         private void adicionarContainerFila(int idContainer)
@@ -130,14 +115,7 @@ namespace SistemaLogistico.Services
 
         public bool Confisco(int id)
         {
-            Container x = null;
-            foreach (Container i in containers)
-            {
-                if (i.Id == id)
-                {
-                    x = i;
-                }
-            }
+            var x = containers.Where(x => x.Id == id).FirstOrDefault();
             if (x != null)
             {
                 containers.Remove(x);
@@ -180,7 +158,7 @@ namespace SistemaLogistico.Services
             return (navios);
         }
         public List<Container> Descarregamento(int id)
-    {
+        {
             Container x = null;
             Navio y = null;
             foreach (Navio n in navios)
@@ -212,7 +190,7 @@ namespace SistemaLogistico.Services
             }
         }
 
-    
+
         public List<int> Fila()
         {
             return (fila);

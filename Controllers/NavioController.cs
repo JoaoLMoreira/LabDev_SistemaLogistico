@@ -1,41 +1,60 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Globalization;
 using SistemaLogistico.Models;
 using SistemaLogistico.Services;
 
 namespace SistemaLogistico.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/systemlog")]
 
-public class NavioController : ControllerBase
+public class NaviosController : ControllerBase
 {
 
     private readonly iNavioService _navioController;
 
-    public NavioController(iNavioService navioController)
+    public NaviosController(iNavioService navioController)
     {
         _navioController = navioController;
     }
 
 
     // Retorna a lista de navios
-    [HttpGet("ListaNavios")]
+    [HttpGet]
     public ActionResult<List<Navio>> ListaNavios()
     {
-        return Ok(_navioController.ListaNavios());
+        try{
+         return Ok(_navioController.ListaNavios());   
+        }
+        catch (FileNotFoundException)
+        {
+            return StatusCode(404, "Nenhum navio encontrado");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Erro ao processar requisição");
+        }
     }
 
     // Retorna a lista de containers
-    [HttpGet("ListaContainers")]
+    [HttpGet("containers/cadastrar")]
     public ActionResult<List<Container>> ListaContainers()
     {
-        return Ok(_navioController.ListaContainers());
+         try{
+            return Ok(_navioController.ListaContainers());
+        }
+        catch (FileNotFoundException)
+        {
+            return StatusCode(404, "Nenhum container encontrado");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Erro ao processar requisição");
+        }
+        
     }
 
     // cadastroNavio
-    [HttpPost("cadastroNavio")]
+    [HttpPost("navios/cadastrar")]
     public ActionResult<List<Navio>> adicionarNavio(Navio navio)
     {
         try
@@ -46,6 +65,10 @@ public class NavioController : ControllerBase
             }
             return StatusCode(400, "Navio não informado no corpo da requisição");
         }
+        catch (ArgumentException)
+        {
+            return StatusCode(400, "A Origem informada é invalida");
+        }
         catch (System.Exception)
         {
             return Problem("Falha ao inserir navio na fila de embarque.");
@@ -53,7 +76,7 @@ public class NavioController : ControllerBase
     }
 
     // alterarNavio
-    [HttpPut("alterarNavio/{id}")]
+    [HttpPut("navio/{id}")]
     public ActionResult<bool> alterarNavio(int id, Navio navio)
     {
         try
@@ -72,7 +95,7 @@ public class NavioController : ControllerBase
     }
 
     // filaEmbarque
-    [HttpPost("filaEmbarque")]
+    [HttpPost("embarque")]
     public ActionResult<(List<Navio>, List<Container>, List<int>, List<int>, List<int>)> adicionarContainerFila(Container container)
     {
         try
@@ -113,9 +136,13 @@ public class NavioController : ControllerBase
             }
             return Ok(_navioController.alterarContainer(id, container));
         }
-        catch (System.Exception)
+        catch (FileNotFoundException)
         {
-            return Problem("Falha ao alterar container.");
+            return StatusCode(404, "Container não encontrado para alteraçao");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Falha ao alterar container.");
         }
 
     }
@@ -128,6 +155,10 @@ public class NavioController : ControllerBase
         {
             return Ok(_navioController.Confisco(id));
         }
+        catch (FileNotFoundException)
+        {
+            return StatusCode(404, "Container não encontrado para alteraçao");
+        }
         catch (System.Exception)
         {
             return Problem("Falha ao confiscar container.");
@@ -135,16 +166,20 @@ public class NavioController : ControllerBase
     }
 
     // carregamento
-    [HttpGet("carregamento")]
+    [HttpGet("carregados")]
     public ActionResult<List<Navio>> Carregamento()
     {
         try
         {
             return Ok(_navioController.Carregamento());
         }
-        catch (System.Exception)
+        catch (FileNotFoundException)
         {
-            return Problem("Falha ao efetuar carregamento.");
+            return StatusCode(404, "Nenhum navio encontrado");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Falha ao executar carregamento");
         }
     }
 
@@ -156,24 +191,32 @@ public class NavioController : ControllerBase
         {
             return Ok(_navioController.Descarregamento(id));
         }
-        catch (System.Exception)
+        catch (FileNotFoundException)
         {
-            return Problem("Falha ao efetuar descarregamento.");
+            return StatusCode(404, "Nenhum container encontrado");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Falha ao executar o descarregamento");
         }
 
     }
 
     // Retorna a fila de containers
-    [HttpGet("Fila")]
+    [HttpGet("fila")]
     public ActionResult<List<int>> Fila()
     {
         try
         {
             return Ok(_navioController.Fila());
         }
-        catch (System.Exception)
+        catch (FileNotFoundException)
         {
-            return Problem("Falha ao retorna a fila de containers.");
+            return StatusCode(404, "Nenhum navio encontrado");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Falha ao executar o descarregamento");
         }
     }
 
