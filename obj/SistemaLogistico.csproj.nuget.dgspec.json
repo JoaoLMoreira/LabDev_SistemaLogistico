@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\SistemaLogistico.csproj": {}
+    "C:\\Users\\joaol\\source\\repos\\JoaoLMoreira\\LabDev_SistemaLogistico\\SistemaLogistico.csproj": {}
   },
   "projects": {
-    "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\SistemaLogistico.csproj": {
+    "C:\\Users\\joaol\\source\\repos\\JoaoLMoreira\\LabDev_SistemaLogistico\\SistemaLogistico.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
+        "projectUniqueName": "C:\\Users\\joaol\\source\\repos\\JoaoLMoreira\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
         "projectName": "SistemaLogistico",
-        "projectPath": "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
+        "projectPath": "C:\\Users\\joaol\\source\\repos\\JoaoLMoreira\\LabDev_SistemaLogistico\\SistemaLogistico.csproj",
         "packagesPath": "C:\\Users\\joaol\\.nuget\\packages\\",
-        "outputPath": "C:\\_Dev\\WEB\\TrabFlavio\\LabDev_SistemaLogistico\\obj\\",
+        "outputPath": "C:\\Users\\joaol\\source\\repos\\JoaoLMoreira\\LabDev_SistemaLogistico\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\joaol\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -9,7 +9,7 @@ namespace SistemaLogistico.Services
         List<Container> ListaContainers();
         bool alterarNavio(int id, Navio navio);
         List<Navio> adicionarNavio(Navio navio);
-        (List<Navio>, List<Container>, List<int>, List<int>, List<int>) adicionarContainerFila(Container container);
+        NavioResponse adicionarContainerFila(Container container);
         bool alterarContainer(int id, Container container);
         bool Confisco(int id);
         List<Navio> Carregamento();

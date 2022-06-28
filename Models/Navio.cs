@@ -24,3 +24,13 @@ public class Navio {
     public List<Container> ListaContainers {get; set;}
 
 }
+
+public class NavioResponse
+{
+    public List<Navio> Navio {get; set;}
+    public List<Container> Container { get; set; }
+    public List<int> fila1 {get; set;}
+    public List<int> fila2 { get; set; }
+    public List<int> fila3 { get; set; }
+
+}

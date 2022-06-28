@@ -29,6 +29,7 @@ namespace SistemaLogistico.Services
 
         private Container getContainerById(int id)
         {
+    
             return containers.Where(x => x.Id == id).FirstOrDefault();
         }
 
@@ -81,21 +82,29 @@ namespace SistemaLogistico.Services
             return (true);
         }
 
-        public (List<Navio>, List<Container>, List<int>, List<int>, List<int>) adicionarContainerFila(Container container)
+        public  NavioResponse adicionarContainerFila(Container container)
         {
             adicionarContainer(container.Ponto.ToUpper(), container.Carga);
             adicionarContainerFila(containers.Last().Id);
-            return (navios, containers, fila1, fila2, fila3);
+            return new NavioResponse()
+            {
+                Container = containers,
+                Navio =  navios,
+                fila1 = fila1,
+                fila2 = fila2,
+                fila3 = fila3
+            };
         }
-
-
 
         public bool alterarContainer(int id, Container container)
         {
-            Container aux = null;
+            Container aux = new Container();
 
             aux = getContainerById(id);
-
+            if (aux == null)
+            {
+                throw new DriveNotFoundException();
+            }
             if (container.Carga > 0)
             {
                 aux.Carga = container.Carga;

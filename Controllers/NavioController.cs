@@ -19,10 +19,11 @@ public class NaviosController : ControllerBase
 
 
     // Retorna a lista de navios
-    [HttpGet]
+    [HttpGet("navios")]
     public ActionResult<List<Navio>> ListaNavios()
     {
-        try{
+        try
+        {
          return Ok(_navioController.ListaNavios());   
         }
         catch (FileNotFoundException)
@@ -36,7 +37,7 @@ public class NaviosController : ControllerBase
     }
 
     // Retorna a lista de containers
-    [HttpGet("containers/cadastrar")]
+    [HttpGet("containers")]
     public ActionResult<List<Container>> ListaContainers()
     {
          try{
@@ -54,7 +55,7 @@ public class NaviosController : ControllerBase
     }
 
     // cadastroNavio
-    [HttpPost("navios/cadastrar")]
+    [HttpPost("navios")]
     public ActionResult<List<Navio>> adicionarNavio(Navio navio)
     {
         try
@@ -96,7 +97,7 @@ public class NaviosController : ControllerBase
 
     // filaEmbarque
     [HttpPost("embarque")]
-    public ActionResult<(List<Navio>, List<Container>, List<int>, List<int>, List<int>)> adicionarContainerFila(Container container)
+    public ActionResult<NavioResponse> adicionarContainerFila(Container container)
     {
         try
         {
@@ -136,7 +137,7 @@ public class NaviosController : ControllerBase
             }
             return Ok(_navioController.alterarContainer(id, container));
         }
-        catch (FileNotFoundException)
+        catch (DriveNotFoundException)
         {
             return StatusCode(404, "Container não encontrado para alteraçao");
         }
@@ -166,7 +167,7 @@ public class NaviosController : ControllerBase
     }
 
     // carregamento
-    [HttpGet("carregados")]
+    [HttpGet("carregar")]
     public ActionResult<List<Navio>> Carregamento()
     {
         try
